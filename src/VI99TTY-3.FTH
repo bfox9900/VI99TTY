@@ -238,7 +238,7 @@ DECIMAL
 
   READONLY OFF 
 
-  PAGE ." VI99 TTY Shell 0.7  10Jun2023   Brian Fox"
+  PAGE ." VI99 TTY Shell 0.71  10Jun2023   Brian Fox"
   CR
   CR ." help to see manpage"
   CR ." ls or ls-l to see files on disk"
