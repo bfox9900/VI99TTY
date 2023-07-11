@@ -56,6 +56,7 @@ DECIMAL
    ( addr len) INTERPRET
   AGAIN ;
 
+: HOME     0 0 ROW 2! ;
 
 \ very deep case statements overflow the return stack. (I think)
 : CTRL-KEYS ( c -- c)
@@ -99,10 +100,10 @@ DECIMAL
 
  : UPPER-KEYS 
   DUP CASE 
- [CHAR] G OF ARG# GOTOLINE LIST      ENDOF 
+ [CHAR] G OF ARG# GOTOLINE LIST HOME ENDOF 
  [CHAR] A OF >EOL INSERT-TEXT        ENDOF  
  [CHAR] D OF CMD-D                   ENDOF 
- [CHAR] H OF ROW OFF  COL OFF        ENDOF  
+ [CHAR] H OF HOME                    ENDOF  
  [CHAR] J OF  ( JOIN FUTURE)         ENDOF 
  [CHAR] L OF 23 ROW !                ENDOF 
  [CHAR] M OF 12 ROW !                ENDOF 
@@ -119,7 +120,7 @@ DECIMAL
 DECIMAL
 : COMMANDER  ( -- )
   LIST   
-  0 0 ROW 2! 
+  HOME 
   BEGIN
     DEBUG 
     ROW/COL AT-XY CMDKEY 
