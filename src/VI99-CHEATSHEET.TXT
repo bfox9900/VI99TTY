@@ -1,16 +1,17 @@
 VI99 TTY Text editor  alpha version  June 2023  Brian Fox 
 
                      VI99 TTY CHEATSHEET 
-This program requires the Editor/Assembler Cartridge or an equivalent 
-program loader. 
 
-Extensive use is made of the Forth interpreter to reduce the program size.
+This program requires the Editor/Assembler Cartridge or an equivalent 
+program loader.  Select Menu Option 5 and type VI99TTY as the program name.
+
+Ahe Forth interpreter is used to reduce the program size.
 This means that if you enter an invalid command at the ':' in VI99, you 
 will be bounced back into the shell program. The buffer you are editing 
 is unchanged.  Re-enter editing with the 'e' command. 
 
 Caveat:
-The copy buffer is organized as a stack in this version.
+The copy buffer is organized as a stack in this version. (0.7)
 This will change in future. 
 Currently it can hold about 180 lines in VDP RAM. 
 Be warned: It takes about 13 seconds to paste 150 lines. :-)
