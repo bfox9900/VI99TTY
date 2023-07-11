@@ -1,12 +1,13 @@
 VI99 TTY Text editor  alpha version  June 2023  Brian Fox 
 
                      VI99 TTY CHEATSHEET 
+This program requires the Editor/Assembler Cartridge or an equivalent 
+program loader. 
 
 Extensive use is made of the Forth interpreter to reduce the program size.
-If you enter an invalid command at the ':' in VI99, you will be bounced 
-back into the shell program. The buffer you are editing is unchanged.
-Re-enter editing with the 'e' command. 
-
+This means that if you enter an invalid command at the ':' in VI99, you 
+will be bounced back into the shell program. The buffer you are editing 
+is unchanged.  Re-enter editing with the 'e' command. 
 
 Caveat:
 The copy buffer is organized as a stack in this version.
@@ -79,6 +80,8 @@ cd     "change disk" selects the default disk used in a path.
 cold   restart the shell program
 clear  clears the terminal screen. 
 db     kill the copy/paste buffer. 
+
+bye    Reset TI-99. Returns to splash screen
 
 
 
