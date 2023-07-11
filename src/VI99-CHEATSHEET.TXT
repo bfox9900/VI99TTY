@@ -56,6 +56,8 @@ The stack buffer was not a good idea. Next version ...
  ~ – Change case OF individual character
  u – Undo last change. (not finished in V0.7) 
 
+ ^Z - Exit to the shell program
+
 
 \ COLON COMMAND LINE COMMANDS ( while in the editor)
  :w – Save the file but keep it open
