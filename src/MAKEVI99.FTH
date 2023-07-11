@@ -1,0 +1,33 @@
+\ MAKEVI99.FTH  builds the program from camel99 KERNEL  
+\ June 10,2023 B Fox  
+
+
+DECIMAL  
+NEEDS DUMP        FROM DSK1.TOOLS  
+NEEDS FORGET      FROM DSK1.FORGET  
+NEEDS READ-LINE   FROM DSK1.ANSFILES  
+NEEDS CASE        FROM DSK1.CASE  
+NEEDS -TRAILING   FROM DSK1.TRAILING  
+NEEDS MARKER      FROM DSK1.MARKER  
+NEEDS VALUE       FROM DSK1.VALUES  
+NEEDS DEFER         FROM DSK1.DEFER  
+NEEDS .R           FROM DSK1.UDOTR   
+
+NEEDS COMMAND-LINE  FROM DSK2.VI99TTY-1  
+NEEDS CMD-d         FROM DSK2.VI99TTY-2  
+CR .S   
+CR  
+
+INCLUDE DSK2.VI99TTY-3  
+
+CR .( locking dictionary )  
+LOCK   
+
+CR .( Reseting HEAP pointer)  
+HEX 2000 H !  DECIMAL   \ reset heap so we don't save it   
+
+INCLUDE DSK1.SAVESYS  
+CR 
+CR .( Saving binary program ...)   
+' VI99 SAVESYS DSK2.VI99TTY  
+

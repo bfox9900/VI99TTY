@@ -1,0 +1,83 @@
+VI99 TTY Text editor  alpha version  June 2023  Brian Fox 
+
+                       CHEATSHEET 
+
+Caveats:
+The copy buffer is organized as a stack in this version.
+This will change in future. 
+Currently it can hold about 180 lines in VDP RAM. 
+Be warned: It takes about 13 seconds to paste 150 lines. 
+The stack buffer was not a good idea. 
+
+
+\ VI99 Command Mode 
+\ --------------------
+
+\ CURSOR 
+ h - go left, 4h goes 4 characters left 
+ l - go right, 4l goes 4 characters right
+ j - go down, 4j goes 4 lines down
+ k-  go up,  4k goes 4 lines up 
+
+ i – Insert at cursor (goes into insert mode)
+ a – Write after cursor (goes into insert mode)
+ A – Write at the end OF line (goes into insert mode)
+ ESC – Terminate editing mode
+ o – Open a new line BELOW current line (goes into insert mode)
+
+\ Delete Command
+ dd – Delete line  3dd – Delete 3 lines.
+ d$ - Delete contents of line after the cursor
+ dw – Delete word.  4dw deletes 4 words
+ db - delete copy buffer 
+ D – same as D$
+
+ b - go back one word.  3b goes back 3 words 
+
+ w - go forward one word.  3w goes forward 3 words
+ x – Delete character at the cursor
+ r – Replace character
+ R – Overwrite characters from cursor onward
+ p	- Put the yanked line below the current line
+ P	- Put the yanked line above the current line 
+ yy	- Yank the current line (copy) Numbers can precede. 
+ 8G - goto line number 8 
+ ~ – Change case OF individual character
+ ^P - not standard VI. Insert one line at the cursor.
+ u – Undo last change. Not working well. 
+
+
+\ COLON COMMAND LINE COMMANDS ( while in the editor)
+ :w – Save the file but keep it open
+ :r <filename>   read filename into current buffer at cursor line 
+ :q! – Quit vi and do not save changes 
+ :wq – Save the file and quit editor 
+
+
+\ SHELL COMMANDS 
+ls - show directory, file names only
+ls-l show directory with file type and size 
+vi   <path> start editor with file name give or an empty buffer  
+: view   view file in read-only mode. (Can't save)
+: e     edit the buffer currently in memory.    
+: help   VIMANPAGE must be on boot disk. Show man page 
+
+: cd     "change disk" selects the default disk used in a path. 
+: cold   restart the editor
+: clear  clears the terminal screen. 
+: db     kill the copy/paste buffer. 
+
+
+
+\  RS232 configuration 
+
+ Default setup command line:  
+     RS232 /TTY1 BA=19200 8,n,1 OPEN-TTY
+ Options
+ BA=1200  BA=2400  BA=2400  BA=4800  BA=9600 BA=19200  BA=38400
+ /TTY2  RTS/CTS handshake is not connected on TI CARD
+
+ 8,n,1  there are no other protocol options in Version 0.6 
+================================================
+
+
