@@ -6,8 +6,8 @@ Caveats:
 The copy buffer is organized as a stack in this version.
 This will change in future. 
 Currently it can hold about 180 lines in VDP RAM. 
-Be warned: It takes about 13 seconds to paste 150 lines. 
-The stack buffer was not a good idea. 
+Be warned: It takes about 13 seconds to paste 150 lines. :-)
+The stack buffer was not a good idea. Next version ...
 
 
 \ VI99 Command Mode 
@@ -37,14 +37,18 @@ The stack buffer was not a good idea.
  w - go forward one word.  3w goes forward 3 words
  x – Delete character at the cursor
  r – Replace character
- R – Overwrite characters from cursor onward
+ R – REPLACE mode. Edit characters from cursor onward but overwrite
  p	- Put the yanked line below the current line
  P	- Put the yanked line above the current line 
- yy	- Yank the current line (copy) Numbers can precede. 
- 8G - goto line number 8 
- ~ – Change case OF individual character
  ^P - not standard VI. Insert one line at the cursor.
- u – Undo last change. Not working well. 
+
+ yy	- Yank the current line (copy)  
+5yy - Yank 5 lines into copy buffer. 
+ G  - Goto top of file
+ 8G - goto line number 8 
+ 
+ ~ – Change case OF individual character
+ u – Undo last change. (not finished in V0.7) 
 
 
 \ COLON COMMAND LINE COMMANDS ( while in the editor)
@@ -58,14 +62,15 @@ The stack buffer was not a good idea.
 ls - show directory, file names only
 ls-l show directory with file type and size 
 vi   <path> start editor with file name give or an empty buffer  
-: view   view file in read-only mode. (Can't save)
-: e     edit the buffer currently in memory.    
-: help   VIMANPAGE must be on boot disk. Show man page 
 
-: cd     "change disk" selects the default disk used in a path. 
-: cold   restart the editor
-: clear  clears the terminal screen. 
-: db     kill the copy/paste buffer. 
+view   view file in read-only mode. (Can't save)
+e      edit the buffer currently in memory.    
+help   VIMANPAGE must be on boot disk. Show man page 
+
+cd     "change disk" selects the default disk used in a path. 
+cold   restart the shell program
+clear  clears the terminal screen. 
+db     kill the copy/paste buffer. 
 
 
 
