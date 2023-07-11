@@ -3,9 +3,11 @@ VI99 TTY Text editor  alpha version  June 2023  Brian Fox
                      VI99 TTY CHEATSHEET 
 
 This program requires the Editor/Assembler Cartridge or an equivalent 
-program loader.  Select Menu Option 5 and type VI99TTY as the program name.
+program loader. 
+- Select Menu Option 5 
+- Type VI99TTY1 as the program name.
 
-Ahe Forth interpreter is used to reduce the program size.
+A Forth interpreter is used to reduce the program size.
 This means that if you enter an invalid command at the ':' in VI99, you 
 will be bounced back into the shell program. The buffer you are editing 
 is unchanged.  Re-enter editing with the 'e' command. 
