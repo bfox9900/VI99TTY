@@ -1,5 +1,5 @@
 \ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-\ vi99tty-3.fth           PART 3 
+\ vi99tty-3.fth           PART 3 OF 3 
 
 : GOBACK ( addr len -- addr' len') 
     DUP 1 <                    \ test for beginning of line 
@@ -56,16 +56,10 @@ DECIMAL
    ( addr len) INTERPRET
   AGAIN ;
 
-\ ..................................
-\ command mode loop 
-DECIMAL
-: COMMANDER  ( -- )
-  LIST   
-  0 0 ROW 2! 
-  BEGIN
-    DEBUG 
-    ROW/COL AT-XY CMDKEY 
-    CASE
+
+\ very deep case statements overflow the return stack. (I think)
+: CTRL-KEYS ( c -- c)
+   DUP CASE
     \ control keys
     ^ F OF  1SCR          MOVESCR    ENDOF
     ^ B OF  1SCR NEGATE   MOVESCR    ENDOF
@@ -76,8 +70,11 @@ DECIMAL
     ^ L OF  LIST                     ENDOF
     ^ M OF  GODOWN  COL OFF          ENDOF
     ^ Z OF   PAGE ." Forth" ABORT    ENDOF
-    
-    \ alpha keys      
+    ENDCASE 
+;
+
+: LOWER-KEYS ( c -- c)
+ DUP CASE 
        BL OF GORIGHT                 ENDOF 
  [CHAR] 0 OF COL OFF                 ENDOF 
  [CHAR] $ OF >EOL                    ENDOF 
@@ -97,8 +94,11 @@ DECIMAL
  [CHAR] w OF CMD-w                   ENDOF 
  [CHAR] x OF CMD-x                   ENDOF 
  [CHAR] y OF CMD-y                   ENDOF 
+ ENDCASE 
+ ;
 
-\  UPPER case commands  
+ : UPPER-KEYS 
+  DUP CASE 
  [CHAR] G OF ARG# GOTOLINE LIST      ENDOF 
  [CHAR] A OF >EOL INSERT-TEXT        ENDOF  
  [CHAR] D OF CMD-D                   ENDOF 
@@ -111,6 +111,22 @@ DECIMAL
  [CHAR] Y OF CUTLINES                ENDOF 
  [CHAR] ~ OF CHANGE-CASE             ENDOF 
     ENDCASE
+;
+
+
+\ ..................................
+\ command mode loop 
+DECIMAL
+: COMMANDER  ( -- )
+  LIST   
+  0 0 ROW 2! 
+  BEGIN
+    DEBUG 
+    ROW/COL AT-XY CMDKEY 
+    CTRL-KEYS 
+    LOWER-KEYS
+    UPPER-KEYS 
+    DROP
   AGAIN 
 ;
 
@@ -159,6 +175,7 @@ DECIMAL
 
 
 \ add the ls and ls-l  commands 
+INCLUDE DSK2.VILS
 INCLUDE DSK2.VILS-L
 
 \ internal use version to start the editor with stack string argument
@@ -180,10 +197,27 @@ INCLUDE DSK2.VILS-L
 : cd     PARSE-NAME ?DOT TOUPPER  $HOME PLACE ;
 : cold   COLD ;
 : clear  PAGE ;
-: bd     KILL-BUFFER SPACE  ." General buffer cleared" ;
+
+: rm     PARSE-NAME TOUPPER +PATH  
+         CR ." Delete " 2DUP TYPE SPACE 
+         CR ." Are you sure? (Y/N)" 
+         KEY UPCASE DUP EMIT  [CHAR] Y =
+         IF 
+            DV80 R/W DELETE-FILE DROP 
+        ELSE 2DROP CR ." Cancelled" CR 
+        THEN 
+;
+
+\ use with OPEN-TTY 
+HEX 
+: BA=1200     01A0 BPS ! ;
+: BA=4800     0068 BPS ! ;
+: BA=2400     00D0 BPS ! ;
+\ : BA=9600  ( -- ) 0034 BPS ! ;
+\ : BA=19200 ( -- ) 001A BPS ! ;
+: BA=38400 ( -- ) 000D BPS ! ;
 
 \ exit to TI99 title page, machine code 
-HEX 
 CODE bye  
   04E0 , 83C4 ,  \ 83C4 @@ CLR,   clear interrupt vector
   0420 , 0000 ,  \ 0000 @@ BLWP,  ROM reset vector is at 0000
@@ -202,9 +236,8 @@ DECIMAL
   ['] NEWQUIT ['] QUIT CELL+ !  \ patch quit (Forth interpreter)
 
   READONLY OFF 
- \ NEWTEXT? OFF 
 
-  PAGE ." VI99 TTY Shell 0.7  8Jun2023   Brian Fox"
+  PAGE ." VI99 TTY Shell 0.7  10Jun2023   Brian Fox"
   CR
   CR ." help to see manpage"
   CR ." ls or ls-l to see files on disk"
@@ -216,11 +249,4 @@ DECIMAL
   ABORT ;
 
 HERE SWAP -  DECIMAL . .( bytes)  
-
-LOCK ( *** MUST RUN LOCK BEFORE INVOKING VI99 ** )
-HEX 2000 H !  DECIMAL   \ reset heap so we don't save it 
-INCLUDE DSK1.SAVESYS
-' VI99 SAVESYS DSK2.VI99TTY
-
-
 
