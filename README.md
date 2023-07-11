@@ -13,3 +13,9 @@ a few shell commands:
 - cd <device> to change the default disk for the shell
 - rm <filename> to delete a file (permanently) with an "Are you sure?"
 
+The editor behaves very much like VI but the entire feature set cannot
+fit into the 24K of program space on the TI-99 so VI99 TTY provides the
+most commonly used commands and features. 
+
+See VDP-CHEATSHEET.TXT for all the available features and commands. 
+

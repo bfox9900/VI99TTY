@@ -1,8 +1,14 @@
 VI99 TTY Text editor  alpha version  June 2023  Brian Fox 
 
-                       CHEATSHEET 
+                     VI99 TTY CHEATSHEET 
 
-Caveats:
+Extensive use is made of the Forth interpreter to reduce the program size.
+If you enter an invalid command at the ':' in VI99, you will be bounced 
+back into the shell program. The buffer you are editing is unchanged.
+Re-enter editing with the 'e' command. 
+
+
+Caveat:
 The copy buffer is organized as a stack in this version.
 This will change in future. 
 Currently it can hold about 180 lines in VDP RAM. 
@@ -83,6 +89,9 @@ db     kill the copy/paste buffer.
  /TTY2  RTS/CTS handshake is not connected on TI CARD
 
  8,n,1  there are no other protocol options in Version 0.6 
+
+ To change only baud rate: 
+ BA=9600 OPEN-TTY 
 ================================================
 
 
