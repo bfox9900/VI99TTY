@@ -1,4 +1,4 @@
-\ MAKEVI99.FTH  builds the program from camel99 KERNEL  
+\ MAKEVI99.FTH  builds the program from CAMELTTY kernel program 
 \ June 10,2023 B Fox  
 
 
