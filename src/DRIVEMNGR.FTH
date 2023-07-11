@@ -40,9 +40,3 @@ CREATE $HOME 8 ALLOT
     PAD COUNT                     \ return the full path as stack string pair
   THEN                                 
 ;
-
-: SAVE  ( -- )  
-  READONLY @ IF PROMPT ." Mode is READONLY" 1000 MS  EXIT  THEN 
-  FILENAME COUNT WRITE-FILE ;
-  
-
