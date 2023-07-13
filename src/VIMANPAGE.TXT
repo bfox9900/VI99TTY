@@ -3,9 +3,18 @@ VI99 TTY Text editor  alpha version  June 2023  Brian Fox
                      VI99 TTY CHEATSHEET 
 
 This program requires the Editor/Assembler Cartridge or an equivalent 
-program loader. 
+program loader and you will need to provide VT100 terminal or emulator.
+
+###To load the program on TI-99
+- Insert/select Editor/Assembler Cartridge
+- Press any key
+- Press 2 at the menu to select Editor/Assembler
 - Select Menu Option 5 
-- Type VI99TTY1 as the program name.
+- Insert disk with VI99 TTY program in DSKx.
+- Type DSKx.VI99TTY1 as the program name.
+
+###RS-232 Configuration
+- 19.2Kbps,8,n,1 RTS/CTS hardware handshaking
 
 A Forth interpreter is used to reduce the program size.
 This means that if you enter an invalid command at the ':' in VI99, you 
