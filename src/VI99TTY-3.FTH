@@ -226,6 +226,13 @@ CODE bye
 ENDCODE 
 DECIMAL 
 
+: ?FILE  ( addr len --  addr len) 
+  2DUP DV80 R/O OPEN-FILE   
+  IF   DROP CR CR ." ** " TYPE  ."  not found" CR  
+  ELSE CLOSE-FILE  
+  THEN 
+; 
+
 \ Boot the program 
 : VI99
   WARM 
@@ -233,19 +240,24 @@ DECIMAL
   
   KILL-BUFFER 
   GETDEV 
+  
 
-  ['] NEWQUIT ['] QUIT CELL+ !  \ patch quit (Forth interpreter)
 
   READONLY OFF 
 
   PAGE ." VI99 TTY Shell 0.71  10Jun2023   Brian Fox"
+  
   CR
   CR ." help to see manpage"
   CR ." ls or ls-l to see files on disk"
   CR ." cd dsk?.  to change disk"
   CR ." vi <path> to edit a file"
-
   CR ." Type bye to exit vi99 shell"
+  
+  CR  S" VI99CONFIG" +PATH ?FILE INCLUDED 
+  
+  ['] NEWQUIT ['] QUIT CELL+ !  \ patch quit (Forth interpreter)
+
   DECIMAL 
   ABORT ;
 
