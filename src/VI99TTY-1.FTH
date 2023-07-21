@@ -78,6 +78,12 @@ CREATE FILENAME  16 ALLOT   FILENAME OFF
 : OUTBUFF ( -- addr)   PAD 88 + ;   \ used by EDITLINE 255 CHARS MAX 
 : TEMP$     ( -- addr) OUTBUFF 256 + ;
 
+\ range limiters
+: ASCII?     BL [CHAR] ~ BETWEEN ;
+: [ASCII]   ( c -- c) BL [CHAR] ~ CLIP ;
+: [MARGINS] ( n -- n' )  0  WIDTH CLIP ;
+
+: MARGINS   ( colvar --) DUP @   [MARGINS] SWAP ! ;
 
 \ This string is odd. It uses SPAN to hold the length. 
 \ returns address and span that is edited by EDITLINE (see below)k
@@ -85,7 +91,7 @@ CREATE FILENAME  16 ALLOT   FILENAME OFF
 : OUT$    ( -- addr span) OUTBUFF 1+  SPAN @ ;
 
 : >OUT$ ( addr len -- ) \ "to out$"
-  DUP SPAN !   \ reset span to this string's length 
+  DUP [MARGINS] SPAN !   \ reset span to this string's length with limits 
   OUTBUFF DUP 82 BLANK PLACE ;
 
 INCLUDE DSK2.DRIVEMNGR 
@@ -211,20 +217,19 @@ CREATE UBUFFER2 82 ALLOT  \ line change undo buffer
 VARIABLE INSERTING 
 C/L@ 1- CONSTANT WIDTH 
 
-\ range limiters
-: ASCII?     BL [CHAR] ~ BETWEEN ;
-: [ASCII]   ( c -- c) BL [CHAR] ~ CLIP ;
-: [MARGINS] ( n -- n' )  0  WIDTH CLIP ;
-
-: MARGINS   ( colvar --) DUP @   [MARGINS] SWAP ! ;
 
 \ editing the OUT$ has special words 
 : 'ECURS ( -- addr) OUTBUFF CHAR+ COL @ + ; \ EDITLINE's cursor 
-: SPAN!  ( n --) SPAN @  MAX  SPAN ! ;
+: SPAN!  ( n --) 0 SPAN @ CLIP  SPAN ! ; \ changed to clip vs MAX 
 
-: PUTCH  ( c -- )  \ put character in OUTBUFF 
-  [ASCII] DUP 'ECURS C! EMIT  COL 1+!  COL @ [MARGINS] SPAN! ; 
+: PUTCH  ( c -- )  \ put character in OUTBUFF if printable char !
+  ASCII? 0= IF DROP   END 
   
+  DUP 'ECURS C! EMIT  
+  COL 1+!  COL @ [MARGINS] SPAN ! 
+;
+
+
 : PUSHRIGHT ( -- )
   OUT$ RIGHTSIDE OVER 1+  SWAP 1+ MOVE 
   BL 'ECURS C!

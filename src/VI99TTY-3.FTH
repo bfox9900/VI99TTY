@@ -1,5 +1,4 @@
-\ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-\ vi99tty-3.fth           PART 3 OF 3 
+\ vi99tty-3.fth           PART 3 OF 3       June 18 2023 Brian Fox 
 
 : GOBACK ( addr len -- addr' len') 
     DUP 1 <                    \ test for beginning of line 
@@ -226,27 +225,34 @@ CODE bye
 ENDCODE 
 DECIMAL 
 
-: ?FILE  ( addr len --  addr len) 
-  2DUP DV80 R/O OPEN-FILE   
-  IF   DROP CR CR ." ** " TYPE  ."  not found" CR  
-  ELSE CLOSE-FILE  
-  THEN 
-; 
+\ : ?FILE  ( addr len --  addr len) 
+\  2DUP DV80 R/O OPEN-FILE   
+\  IF   DROP CR CR ." ** " TYPE  ."  not found" CR  
+\  ELSE CLOSE-FILE  
+\  THEN 
+\ ; 
+
+: VDP.BOOT.SCREEN
+  VDP.PAGE S" VI99 TTY Editor" VDP.TYPE
+  VDP.CR S" RS232/1 8,N,1 RTS/CTS handshake" VDP.TYPE
+  VDP.CR
+  VDP.CR S" Press enter on your terminal" VDP.TYPE
+  VDP.CR S" to set baud rate" VDP.TYPE
+;
+
+INCLUDE DSK2.AUTOBAUD 
 
 \ Boot the program 
 : VI99
-  WARM 
-  ALWAYS ON 
-  
-  KILL-BUFFER 
-  GETDEV 
-  
+  WARM    
+  ALWAYS ON   KILL-BUFFER  
+  GETDEV      READONLY OFF 
+ \ CR  S" VI99CONFIG" +PATH INCLUDED 
 
+  VDP.BOOT.SCREEN 
+  AUTOBAUD 
 
-  READONLY OFF 
-
-  PAGE ." VI99 TTY Shell 0.71  10Jun2023   Brian Fox"
-  
+  PAGE ." VI99 TTY Shell 0.8  18Jun2023   Brian Fox"
   CR
   CR ." help to see manpage"
   CR ." ls or ls-l to see files on disk"
@@ -254,7 +260,6 @@ DECIMAL
   CR ." vi <path> to edit a file"
   CR ." Type bye to exit vi99 shell"
   
-  CR  S" VI99CONFIG" +PATH ?FILE INCLUDED 
   
   ['] NEWQUIT ['] QUIT CELL+ !  \ patch quit (Forth interpreter)
 
@@ -262,4 +267,6 @@ DECIMAL
   ABORT ;
 
 HERE SWAP -  DECIMAL . .( bytes)  
+
+LOCK 
 
