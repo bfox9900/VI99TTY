@@ -1,6 +1,6 @@
 \ 
 
-MARKER PART2 
+MARKER /PART2 
 
 : DO-ENTERKEY 
     OUT$ TEMP$ PLACE 
@@ -29,9 +29,9 @@ DEFER DEBUG
     VDP.CURS  C/L@ 5 *  BL VFILL
     S" S| "   VDP.TYPE VDP.S  VDP.CR
     S" R| "   VDP.TYPE RP0 RP@ - 2/  3 VDP.R  VDP.CR
-    S" X/Y "  VDP.TYPE ROW/COL SWAP VDP. VDP. VDP.CR 
-    S" ARG#=" VDP.TYPE  ARG# VDP. VDP.CR  VDP.CR
-    S" Topline="  VDP.TYPE  TOPLINE @ VDP. S" SPAN=" VDP.TYPE  SPAN @ VDP. 
+ \   S" X/Y "  VDP.TYPE ROW/COL SWAP VDP. VDP. VDP.CR 
+ \   S" ARG#=" VDP.TYPE  ARG# VDP. VDP.CR  VDP.CR
+ \   S" Topline="  VDP.TYPE  TOPLINE @ VDP. S" SPAN=" VDP.TYPE  SPAN @ VDP. 
     S" LSTK=" VDP.TYPE    LDEPTH  VDP. ; 
 ;
 
@@ -61,23 +61,33 @@ CR .( file stats line)
 
 
 \ ------------------------------------------
-: .RIGHT ( addr len -- ) 
-  RIGHTSIDE  ROW/COL AT-XY <ERASERIGHT> TYPE ;  
+: .RIGHT ( addr len -- )  RIGHTSIDE  ROW/COL AT-XY <ERASERIGHT> TYPE ;  
 
+: DELCHAR2  ( -- ) 
+  OUT$ RIGHTSIDE DUP 1 < IF  2DROP  END 
+  /CHAR SPAN DECR! ;  
+
+
+: BS-KEY2 
+  OUT$ 1 < IF  DROP  END 
+  INSERTING @ 
+  IF   BACKSPACE DELCHAR2 
+  ELSE BACKSPACE 
+  THEN ;
 
 DECIMAL
 : EDITLINE ( addr len -- )
-  >OUT$
+  >OUT$ REFRESHLN
   BEGIN
     OUT$ .RIGHT 
- \   DEBUG 
+  \  DEBUG 
     ROW/COL AT-XY KEY 
     DUP ESC <>  
   WHILE   
       OUT$ UBUFFER PLACE  ( save for undo )
       CASE
-       127 OF  DELCHAR            ENDOF
-         8 OF  BS-KEY             ENDOF
+       127 OF  DELCHAR2            ENDOF
+         8 OF  BS-KEY2             ENDOF
         13 OF  DO-ENTERKEY        ENDOF 
        ^ Z OF  EDITUNDO           ENDOF 
         \ ascii char handler 
@@ -168,7 +178,7 @@ DECIMAL
   RELINE                               \ update the screen  
 ;  
 
-\ delete right OF cursor 
+\ delete right of cursor 
 : CMD-D ( -- )  
   SAVEUNDO  
   ELINE# SEEKTO TEMP$ PLACE
@@ -241,3 +251,4 @@ DECIMAL
 : PREVWORD  -TRAILING  -ASCII ;
 
 CR .( Part 2 compiled )
+

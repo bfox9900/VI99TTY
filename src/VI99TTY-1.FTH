@@ -9,7 +9,7 @@ NEEDS -TRAILING   FROM DSK1.TRAILING
 NEEDS MARKER      FROM DSK1.MARKER
 NEEDS VALUE       FROM DSK1.VALUES
 
-MARKER /VI99 
+MARKER /PART1 
 
 NEEDS <ERASELINE> FROM DSK1.VT100+
 
@@ -222,9 +222,10 @@ C/L@ 1- CONSTANT WIDTH
 : 'ECURS ( -- addr) OUTBUFF CHAR+ COL @ + ; \ EDITLINE's cursor 
 : SPAN!  ( n --) 0 SPAN @ CLIP  SPAN ! ; \ changed to clip vs MAX 
 
-: PUTCH  ( c -- )  \ put character in OUTBUFF if printable char !
+\ put character in OUTBUFF if printable char !
+: PUTCH  ( c -- )  
   ASCII? 0= IF DROP   END 
-  
+ 
   DUP 'ECURS C! EMIT  
   COL 1+!  COL @ [MARGINS] SPAN ! 
 ;
@@ -237,12 +238,13 @@ C/L@ 1- CONSTANT WIDTH
 ;
 
 : BACKSPACE ( -- ) COL DECR! ;
+
 : /CHAR ( addr len -- ) 1 /STRING  OVER 1- SWAP 1 MAX  MOVE ;
 
 : DELCHAR   ( -- ) 
     OUT$ RIGHTSIDE DUP 2 < IF 2DROP  END 
     /CHAR 
-    SPAN DECR! SPAN DECR! 
+    SPAN DECR! SPAN DECR!
 ;  
 
 : BS-KEY 

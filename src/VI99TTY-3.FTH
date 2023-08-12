@@ -1,5 +1,7 @@
 \ vi99tty-3.fth           PART 3 OF 3       June 18 2023 Brian Fox 
 
+MARKER /PART3 
+
 : GOBACK ( addr len -- addr' len') 
     DUP 1 <                    \ test for beginning of line 
     IF    2DROP                \ don't need this string now
@@ -121,7 +123,7 @@ DECIMAL
   LIST   
   HOME 
   BEGIN
-    DEBUG 
+  \  DEBUG 
     ROW/COL AT-XY CMDKEY 
     CTRL-KEYS 
     LOWER-KEYS
@@ -252,7 +254,7 @@ INCLUDE DSK2.AUTOBAUD
   VDP.BOOT.SCREEN 
   AUTOBAUD 
 
-  PAGE ." VI99 TTY Shell 0.8  18Jun2023   Brian Fox"
+  PAGE ." VI99 TTY Shell 0.9  12Aug2023   Brian Fox"
   CR
   CR ." help to see manpage"
   CR ." ls or ls-l to see files on disk"
@@ -269,4 +271,7 @@ INCLUDE DSK2.AUTOBAUD
 HERE SWAP -  DECIMAL . .( bytes)  
 
 LOCK 
+
+INCLUDE DSK1.SAVESYS
+' VI99  SAVESYS DSK2.VI99TTY 
 
