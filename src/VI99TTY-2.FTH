@@ -65,11 +65,11 @@ CR .( file stats line)
 
 : DELCHAR2  ( -- ) 
   OUT$ RIGHTSIDE DUP 1 < IF  2DROP  END 
-  /CHAR SPAN DECR! ;  
+  /CHAR  SPAN DECR! ;  
 
 
 : BS-KEY2 
-  OUT$ 1 < IF  DROP  END 
+  COL @ 1 U< IF  DROP  END 
   INSERTING @ 
   IF   BACKSPACE DELCHAR2 
   ELSE BACKSPACE 
@@ -194,9 +194,7 @@ DECIMAL
       [CHAR] b OF  KILL-BUFFER ENDOF 
       [CHAR] $ OF  CMD-D       ENDOF 
   ENDCASE ;
-\ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-\ vi99tty-3 
 \ ...........................................
 \                  PASTE 
 DECIMAL 
