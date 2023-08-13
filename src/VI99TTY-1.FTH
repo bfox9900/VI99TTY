@@ -38,7 +38,7 @@ HEX
   DUP UPPER? IF LOCASE THEN 
 ;
 
-: TOLOWER
+: TOLOWER ( addr len -- addr len)
   2DUP BOUNDS 
   ?DO  I C@ DUP UPPER? IF LOCASE THEN I C!  LOOP ;
 
