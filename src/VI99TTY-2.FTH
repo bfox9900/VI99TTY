@@ -2,6 +2,8 @@
 
 MARKER /PART2 
 
+INCLUDE DSK2.AUTOBAUD 
+
 : DO-ENTERKEY 
     OUT$ TEMP$ PLACE 
     TEMP$ COUNT LEFTSIDE SAVELN
@@ -63,15 +65,15 @@ CR .( file stats line)
 \ ------------------------------------------
 : .RIGHT ( addr len -- )  RIGHTSIDE  ROW/COL AT-XY <ERASERIGHT> TYPE ;  
 
-: DELCHAR2  ( -- ) 
+: DELCHAR  ( -- ) 
   OUT$ RIGHTSIDE DUP 1 < IF  2DROP  END 
   /CHAR  SPAN DECR! ;  
 
 
-: BS-KEY2 
+: BS-KEY
   COL @ 1 U< IF  DROP  END 
   INSERTING @ 
-  IF   BACKSPACE DELCHAR2 
+  IF   BACKSPACE DELCHAR 
   ELSE BACKSPACE 
   THEN ;
 
@@ -86,8 +88,8 @@ DECIMAL
   WHILE   
       OUT$ UBUFFER PLACE  ( save for undo )
       CASE
-       127 OF  DELCHAR2            ENDOF
-         8 OF  BS-KEY2             ENDOF
+       127 OF  DELCHAR            ENDOF
+         8 OF  BS-KEY             ENDOF
         13 OF  DO-ENTERKEY        ENDOF 
        ^ Z OF  EDITUNDO           ENDOF 
         \ ascii char handler 

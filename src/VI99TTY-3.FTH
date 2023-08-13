@@ -242,8 +242,6 @@ DECIMAL
   VDP.CR S" to set baud rate" VDP.TYPE
 ;
 
-INCLUDE DSK2.AUTOBAUD 
-
 \ Boot the program 
 : VI99
   WARM    
@@ -254,14 +252,13 @@ INCLUDE DSK2.AUTOBAUD
   VDP.BOOT.SCREEN 
   AUTOBAUD 
 
-  PAGE ." VI99 TTY Shell 0.9  12Aug2023   Brian Fox"
+  PAGE ." VI99 TTY Shell 0.91  12Aug2023   Brian Fox"
   CR
   CR ." help to see manpage"
   CR ." ls or ls-l to see files on disk"
   CR ." cd dsk?.  to change disk"
   CR ." vi <path> to edit a file"
   CR ." Type bye to exit vi99 shell"
-  
   
   ['] NEWQUIT ['] QUIT CELL+ !  \ patch quit (Forth interpreter)
 

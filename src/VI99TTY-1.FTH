@@ -217,7 +217,6 @@ CREATE UBUFFER2 82 ALLOT  \ line change undo buffer
 VARIABLE INSERTING 
 C/L@ 1- CONSTANT WIDTH 
 
-
 \ editing the OUT$ has special words 
 : 'ECURS ( -- addr) OUTBUFF CHAR+ COL @ + ; \ EDITLINE's cursor 
 : SPAN!  ( n --) 0 SPAN @ CLIP  SPAN ! ; \ changed to clip vs MAX 
@@ -230,7 +229,6 @@ C/L@ 1- CONSTANT WIDTH
   COL 1+!  COL @ [MARGINS] SPAN ! 
 ;
 
-
 : PUSHRIGHT ( -- )
   OUT$ RIGHTSIDE OVER 1+  SWAP 1+ MOVE 
   BL 'ECURS C!
@@ -240,18 +238,6 @@ C/L@ 1- CONSTANT WIDTH
 : BACKSPACE ( -- ) COL DECR! ;
 
 : /CHAR ( addr len -- ) 1 /STRING  OVER 1- SWAP 1 MAX  MOVE ;
-
-: DELCHAR   ( -- ) 
-    OUT$ RIGHTSIDE DUP 2 < IF 2DROP  END 
-    /CHAR 
-    SPAN DECR! SPAN DECR!
-;  
-
-: BS-KEY 
-   INSERTING @ 
-   IF   BACKSPACE  BL PUTCH  BACKSPACE DELCHAR 
-   ELSE BACKSPACE 
-   THEN ;
 
 : MOVERIGHT    COL 1+! COL MARGINS    COL @ SPAN! ;
 
