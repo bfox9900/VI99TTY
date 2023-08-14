@@ -98,3 +98,4 @@ DECIMAL
 ENDCODE
 
 HERE SWAP - DECIMAL .  .( bytes )
+
