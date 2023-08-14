@@ -82,7 +82,7 @@ DECIMAL
 
 \ * baud rate found - set receive and transmit data interval
         *TOS 12 LDCR,      \ need to write 12 bits.
-        *TOS bps @@ MOV.   \ and save new divisor in the bps variable
+        *TOS BPS @@ MOV.   \ and save new divisor in the bps variable
 
 \ * read a char and throw it away
         BEGIN, 
