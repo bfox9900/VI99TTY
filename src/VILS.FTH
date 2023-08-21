@@ -21,12 +21,10 @@ DECIMAL
   IF  2DROP $HOME COUNT  THEN ; \ replace with default dev$
 
 : ?SPACEBAR  
-  KEY? BL = 
-  IF  
-    BEGIN  
-      KEY DUP BL = OVER 3 = OR 
-    UNTIL 
-  THEN  ;
+  KEY? 0= IF  EXIT THEN 
+  BEGIN  
+    KEY DUP BL = OVER 3 = OR 
+  UNTIL  ;
  
 : ls  ( <DSK?.> )   \  needs the '.' ONLY shows file name
   PARSE-DEV OPEN-CATFILE >R  \ push handle onto Return stack

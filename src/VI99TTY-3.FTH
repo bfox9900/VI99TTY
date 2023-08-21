@@ -145,7 +145,9 @@ DECIMAL
 : -R    READONLY ON ; 
 : -M    READONLY OFF ;
 
-: x   PROMPT ." Saving..." FILENAME COUNT SAVE  CR ABORT ;
+: x   FILENAME C@ 0= IF PROMPT ." No file name" EXIT THEN 
+      PROMPT ." Saving..." FILENAME COUNT SAVE  CR ABORT ;
+
 : q   x  ;
 : q!  CR ." Not saved"   ABORT ;
 
