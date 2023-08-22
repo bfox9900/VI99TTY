@@ -207,7 +207,7 @@ INCLUDE DSK2.VILS-L
          CR ." Are you sure? (Y/N)" 
          KEY UPCASE DUP EMIT  [CHAR] Y =
          IF 
-            DV80 R/W DELETE-FILE DROP 
+             W/O DELETE-FILE DROP 
         ELSE 2DROP CR ." Cancelled" CR 
         THEN 
 ;
@@ -216,7 +216,7 @@ INCLUDE DSK2.VILS-L
 HEX 
 : BA=1200     01A0 BPS ! ;
 : BA=4800     0068 BPS ! ;
-: BA=2400     00D0 BPS ! ;
+\ : BA=2400     00D0 BPS ! ;
 \ : BA=9600  ( -- ) 0034 BPS ! ;
 \ : BA=19200 ( -- ) 001A BPS ! ;
 : BA=38400 ( -- ) 000D BPS ! ;
