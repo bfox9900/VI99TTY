@@ -31,15 +31,18 @@ DEFER DEBUG
     VDP.CURS  C/L@ 5 *  BL VFILL
     S" S| "   VDP.TYPE VDP.S  VDP.CR
     S" R| "   VDP.TYPE RP0 RP@ - 2/  3 VDP.R  VDP.CR
- \   S" X/Y "  VDP.TYPE ROW/COL SWAP VDP. VDP. VDP.CR 
- \   S" ARG#=" VDP.TYPE  ARG# VDP. VDP.CR  VDP.CR
- \   S" Topline="  VDP.TYPE  TOPLINE @ VDP. S" SPAN=" VDP.TYPE  SPAN @ VDP. 
-    S" LSTK=" VDP.TYPE    LDEPTH  VDP. ; 
+    S" X/Y "  VDP.TYPE ROW/COL SWAP VDP. VDP. VDP.CR 
+    S" ARG#=" VDP.TYPE  ARG# VDP. VDP.CR  VDP.CR
+    S" Topline="  VDP.TYPE  TOPLINE @ VDP.  VDP.CR 
+    S" SPAN=" VDP.TYPE  SPAN @ VDP. 
+    S" LSTK=" VDP.TYPE  LDEPTH  VDP. ; 
 ;
 
 DECIMAL 
+: NOOP ;
 
-' .DEPTHS IS DEBUG
+: DEBUGON ['] .DEPTHS IS DEBUG ; 
+: DEBUGOFF  ['] NOOP IS DEBUG ;
 
 \ ------------------------------------------
 CR .( file stats line)
@@ -63,7 +66,6 @@ CR .( file stats line)
 
 
 \ ------------------------------------------
-: .RIGHT ( addr len -- )  RIGHTSIDE  ROW/COL AT-XY <ERASERIGHT> TYPE ;  
 
 : DELCHAR  ( -- ) 
   OUT$ RIGHTSIDE DUP 1 < IF  2DROP  END 
@@ -78,11 +80,11 @@ CR .( file stats line)
   THEN ;
 
 DECIMAL
-: EDITLINE ( addr len -- )
-  >OUT$ REFRESHLN
+: EDITLINE ( addr len -- ) 
+  >OUT$   \ put string into OUTBUFFER 
   BEGIN
-    OUT$ .RIGHT 
-  \  DEBUG 
+    OUT$ RIGHTSIDE  ROW/COL AT-XY <ERASERIGHT> TYPE 
+    DEBUG 
     ROW/COL AT-XY KEY 
     DUP ESC <>  
   WHILE   

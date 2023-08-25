@@ -51,7 +51,7 @@ DECIMAL
 : NEWQUIT 
   RP0 RP! L0 LP !
   SOURCE-ID OFF
-  POSTPONE [
+  POSTPONE 
   BEGIN
     prompt$  TIB DUP 82 ACCEPT SPACE
    ( addr len) INTERPRET
@@ -98,6 +98,7 @@ DECIMAL
  [CHAR] y OF CMD-y                   ENDOF 
  ENDCASE 
  ;
+ 
 
  : UPPER-KEYS 
   DUP CASE 
@@ -112,7 +113,7 @@ DECIMAL
  [CHAR] R OF REPLACE-TEXT            ENDOF 
  [CHAR] Y OF CUTLINES                ENDOF 
  [CHAR] ~ OF CHANGE-CASE             ENDOF 
-    ENDCASE
+  ENDCASE
 ;
 
 
@@ -123,7 +124,7 @@ DECIMAL
   LIST   
   HOME 
   BEGIN
-  \  DEBUG 
+    DEBUG 
     ROW/COL AT-XY CMDKEY 
     CTRL-KEYS 
     LOWER-KEYS
@@ -227,6 +228,7 @@ CODE bye
   0420 , 0000 ,  \ 0000 @@ BLWP,  ROM reset vector is at 0000
   NEXT, 
 ENDCODE 
+
 DECIMAL 
 
 \ : ?FILE  ( addr len --  addr len) 
@@ -247,11 +249,13 @@ DECIMAL
 \ Boot the program 
 : VI99
   WARM    
-  ALWAYS ON   KILL-BUFFER  
+  KILL-BUFFER  
   GETDEV      READONLY OFF 
  \ CR  S" VI99CONFIG" +PATH INCLUDED 
-
+  
   VDP.BOOT.SCREEN 
+  ALWAYS ON   
+  
   AUTOBAUD 
 
   PAGE ." VI99 TTY Shell 0.91  12Aug2023   Brian Fox"
@@ -267,7 +271,7 @@ DECIMAL
   DECIMAL 
   ABORT ;
 
-HERE SWAP -  DECIMAL . .( bytes)  
+\ HERE SWAP -  DECIMAL . .( bytes)  
 
 LOCK 
 

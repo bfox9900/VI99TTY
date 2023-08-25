@@ -75,24 +75,27 @@ CREATE FILENAME  16 ALLOT   FILENAME OFF
 
 \ ........................................
 \ TEMP storage above the Forth dictionary
-: OUTBUFF ( -- addr)   PAD 88 + ;   \ used by EDITLINE 255 CHARS MAX 
-: TEMP$     ( -- addr) OUTBUFF 256 + ;
+DECIMAL 
+CREATE OUTBUFF ( -- addr)  88 ALLOT    \ used by EDITLINE 256 CHARS MAX 
+
+: TEMP$        ( -- addr) PAD 100 + ; \ free dictionary is available 
 
 \ range limiters
-: ASCII?     BL [CHAR] ~ BETWEEN ;
+: ASCII?    ( c -- ?) BL [CHAR] ~ BETWEEN ;
 : [ASCII]   ( c -- c) BL [CHAR] ~ CLIP ;
 : [MARGINS] ( n -- n' )  0  WIDTH CLIP ;
 
 : MARGINS   ( colvar --) DUP @   [MARGINS] SWAP ! ;
 
-\ This string is odd. It uses SPAN to hold the length. 
-\ returns address and span that is edited by EDITLINE (see below)k
-\ It's easier to manipulate a variable for this single purpose
-: OUT$    ( -- addr span) OUTBUFF 1+  SPAN @ ;
-
 : >OUT$ ( addr len -- ) \ "to out$"
   DUP [MARGINS] SPAN !   \ reset span to this string's length with limits 
   OUTBUFF DUP 82 BLANK PLACE ;
+
+\ This string is odd. It uses SPAN to hold the length. 
+\ returns address and span that is edited by EDITLINE (see below)k
+\ It's easier to manipulate a variable for this single purpose
+: OUT$    ( -- addr span) OUTBUFF 1+ SPAN !  ;
+
 
 INCLUDE DSK2.DRIVEMNGR 
 INCLUDE DSK2.COMMANDKEY 
